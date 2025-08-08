@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-{/*clerk_import*/}
-{/*heroui_provider*/}
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Providers } from "@compoenets/provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,18 +24,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
-      {/* clerk_start */}
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          {/* heroui_provider_start */}
+    <html suppressHydrationWarning lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
           {children}
-          {/* heroui_provider_end */}
-        </body>
-      </html>
-      {/* clerk_end */}
-    </>
+        </Providers>
+      </body>
+    </html>
   );
 }

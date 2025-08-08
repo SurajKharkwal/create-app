@@ -1,6 +1,9 @@
 # dependencies (bun install)
 node_modules
 
+my-app
+test
+
 # output
 out
 dist

@@ -8,10 +8,11 @@ async function main() {
   const data = await promptUser();
   const targetDir = path.resolve(process.cwd(), data.appName);
   const template = path.join("base", data.framework, "**");
-  console.log(template);
 
-  await cpy(template, targetDir, { flat: false });
   try {
+    await rimraf(path.join(template, "node_modules"));
+    await rimraf(targetDir);
+    await cpy(template, targetDir, { flat: false });
     if (data.ui !== "none") {
       const { setupConfig } = (await import(
         `extra/next/ui/${data.ui}/setup.config`
