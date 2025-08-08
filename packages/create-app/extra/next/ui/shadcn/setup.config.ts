@@ -37,7 +37,7 @@ export async function setupConfig(pm: PM, appDir: string): Promise<void> {
 
   try {
     await cpy(`${CONFIG_DIR}/components.json`, appDir);
-    await cpy(`${CONFIG_DIR}/utils.ts.txt`, path.join(appDir, "lib"), {
+    await cpy(`${CONFIG_DIR}/lib/utils.ts.txt`, path.join(appDir, "lib"), {
       rename: () => "utils.ts",
     });
 
