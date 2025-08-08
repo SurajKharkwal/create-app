@@ -3,7 +3,7 @@ import type { PM } from "@/src/types";
 import prompts from "prompts";
 import { rimraf } from "rimraf";
 import { readFile, writeFile } from "fs/promises";
-import path from "path";
+import { join } from "path";
 import cpy from "cpy";
 
 const CONFIG_DIR = "extra/next/ui/shadcn/src";
@@ -17,7 +17,7 @@ const dependencies: string[] = [
 ];
 const devDependencies: string[] = ["tw-animate-css"];
 export async function setupConfig(pm: PM, appDir: string): Promise<void> {
-  const configFilePath = path.join(appDir, "components.json");
+  const configFilePath = join(appDir, "components.json");
   const { theme } = await prompts(
     {
       name: "theme",
@@ -36,9 +36,9 @@ export async function setupConfig(pm: PM, appDir: string): Promise<void> {
   );
 
   try {
-    await cpy(`${CONFIG_DIR}/components.json`, appDir);
-    await cpy(`${CONFIG_DIR}/lib/utils.ts.txt`, path.join(appDir, "lib"), {
-      rename: () => "utils.ts",
+    await cpy(join(CONFIG_DIR, "components.json"), appDir);
+    await cpy(join(CONFIG_DIR, "utils.ts.txt"), join(appDir, "lib"), {
+      rename: "utils.ts",
     });
 
     const fileContent = await readFile(configFilePath, "utf8");

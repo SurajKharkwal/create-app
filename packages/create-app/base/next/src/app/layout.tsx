@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-{/*clerk_import*/}
-{/*heroui_provider*/}
+{ /*clerk_import*/ }
+{ /*heroui_provider*/ }
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <>
       {/* clerk_start */}
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >

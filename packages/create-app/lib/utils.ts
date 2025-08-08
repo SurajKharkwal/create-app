@@ -73,3 +73,24 @@ export async function patchFile(filePath: string, patches: PatchMap) {
   // Write updated content (overwrites or new file)
   await writeFile(filePath, content, "utf-8");
 }
+
+export async function removeComments(filePath: string) {
+  let content = await readFile(filePath, "utf-8");
+
+  // Remove JSX comments with braces
+  content = content.replace(/\{\/\*[\s\S]*?\*\/\}/g, "");
+
+  // Remove normal JS block comments
+  content = content.replace(/\/\*[\s\S]*?\*\//g, "");
+
+  // Remove line comments
+  content = content.replace(/\/\/.*$/gm, "");
+
+  // Remove leftover empty JSX expressions like {}
+  content = content.replace(/\{\s*\}/g, "");
+
+  // Remove extra empty lines (replace 2+ empty lines with 1)
+  content = content.replace(/\n\s*\n+/g, "\n");
+
+  await writeFile(filePath, content, "utf-8");
+}

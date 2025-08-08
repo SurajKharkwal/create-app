@@ -1,16 +1,17 @@
 import { promptUser } from "@/src/userInput";
+import { join, resolve } from "path";
 import type { PM, SETUP_CONFIG } from "@/src/types";
 import cpy from "cpy";
-import path from "path";
 import { rimraf } from "rimraf";
+import { removeComments } from "./lib/utils";
 
 async function main() {
   const data = await promptUser();
-  const targetDir = path.resolve(process.cwd(), data.appName);
-  const template = path.join("base", data.framework, "**");
+  const targetDir = resolve(process.cwd(), data.appName);
+  const template = join("base", data.framework, "**");
 
   try {
-    await rimraf(path.join(template, "node_modules"));
+    await rimraf(join(template, "node_modules"));
     await rimraf(targetDir);
     await cpy(template, targetDir, { flat: false });
     if (data.ui !== "none") {
@@ -19,6 +20,7 @@ async function main() {
       )) as { setupConfig: SETUP_CONFIG };
       await setupConfig(data.packageManager as PM, targetDir);
     }
+    removeComments(join(targetDir, "src/app/layout.tsx"));
   } catch (err) {
     console.error("Setup failed:", err);
     await rimraf(targetDir);
