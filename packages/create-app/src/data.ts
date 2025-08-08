@@ -1,4 +1,6 @@
+import { validateNpmName } from "@/lib/utils";
 import chalk from "chalk";
+import path from "path";
 
 export const defaultValue = {
   appName: "my-app",
@@ -16,6 +18,13 @@ export const questions = [
     message: `${chalk.cyan("What is your app name?")} ${chalk.gray("(project folder)")}`,
     initial: defaultValue.appName,
     placeholder: "my-app",
+    validate: (name: string) => {
+      const validation = validateNpmName(path.basename(path.resolve(name)));
+      if (validation.valid) {
+        return true;
+      }
+      return "Invalid project name: " + validation.problems![0];
+    },
   },
   {
     type: "select" as const,
@@ -79,10 +88,10 @@ export const questions = [
     name: "packageManager",
     message: `${chalk.cyan("Which package manager do you want to use?")} ${chalk.gray("(for installing dependencies)")}`,
     choices: [
-      { title: "pnpm", value: "pnpm" },
+      { title: "bun", value: "bun" },
       { title: "npm", value: "npm" },
       { title: "yarn", value: "yarn" },
-      { title: "bun", value: "bun" },
+      { title: "pnpm", value: "pnpm" },
     ],
     initial: 0,
   },
