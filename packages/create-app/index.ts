@@ -8,19 +8,26 @@ import { removeComments } from "./lib/utils";
 async function main() {
   const data = await promptUser();
   const targetDir = resolve(process.cwd(), data.appName);
-  const template = join(__dirname, "base", data.framework, "**");
+  const templateDir = join(__dirname, "base", data.framework);
 
   try {
-    await rimraf(join(template, "node_modules"));
     await rimraf(targetDir);
-    await cpy(template, targetDir, { flat: false });
+
+    await cpy(join(templateDir, "**"), targetDir, {
+      flat: false,
+      ignore: ["**/node_modules/**"],
+    });
+
     if (data.ui !== "none") {
       const { setupConfig } = (await import(
-        `extra/next/ui/${data.ui}/setup.config`
+        `./extra/next/ui/${data.ui}/setup.config.ts`
       )) as { setupConfig: SETUP_CONFIG };
+
       await setupConfig(data.packageManager as PM, targetDir);
     }
-    removeComments(join(targetDir, "src/app/layout.tsx"));
+
+    await removeComments(join(targetDir, "src/app/layout.tsx"));
+
   } catch (err) {
     console.error("Setup failed:", err);
     await rimraf(targetDir);

@@ -59,38 +59,38 @@ export async function installPackages(
 
 type PatchMap = { [placeholder: string]: string };
 
+
 export async function patchFile(filePath: string, patches: PatchMap) {
-  // Read the file content
   let content = await readFile(filePath, "utf-8");
 
-  // Replace all placeholders
   for (const [placeholder, replacement] of Object.entries(patches)) {
     const escaped = placeholder.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const regex = new RegExp(escaped, "g");
     content = content.replace(regex, replacement);
   }
 
-  // Write updated content (overwrites or new file)
   await writeFile(filePath, content, "utf-8");
 }
 
 export async function removeComments(filePath: string) {
   let content = await readFile(filePath, "utf-8");
 
-  // Remove JSX comments with braces
+  // Remove JSX comments: {/* ... */}
   content = content.replace(/\{\/\*[\s\S]*?\*\/\}/g, "");
 
-  // Remove normal JS block comments
+  // Remove JS block comments: /* ... */
   content = content.replace(/\/\*[\s\S]*?\*\//g, "");
 
-  // Remove line comments
-  content = content.replace(/\/\/.*$/gm, "");
+  // Remove JS line comments: // ...
+  // Only match if not inside quotes (basic safeguard)
+  content = content.replace(/(^|[^:])\/\/.*$/gm, "$1");
 
-  // Remove leftover empty JSX expressions like {}
+  // Remove empty JSX expressions: {}
   content = content.replace(/\{\s*\}/g, "");
 
-  // Remove extra empty lines (replace 2+ empty lines with 1)
+  // Collapse multiple empty lines into one
   content = content.replace(/\n\s*\n+/g, "\n");
 
-  await writeFile(filePath, content, "utf-8");
+  await writeFile(filePath, content.trim() + "\n", "utf-8");
 }
+

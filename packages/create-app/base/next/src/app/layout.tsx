@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 { /*clerk_import*/ }
-{ /*heroui_provider*/ }
+{/*heroui_provider*/}
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -31,9 +31,9 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          {/* heroui_provider_start */}
+          {/*hero_provider_start*/}
           {children}
-          {/* heroui_provider_end */}
+          {/*hero_provider_end*/}
         </body>
       </html>
       {/* clerk_end */}
