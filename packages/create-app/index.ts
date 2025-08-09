@@ -1,6 +1,6 @@
 import { promptUser } from "@/src/userInput";
 import { join, resolve } from "path";
-import type { PM, SETUP_CONFIG } from "@/src/types";
+import type { SETUP_CONFIG } from "@/src/types";
 import cpy from "cpy";
 import { rimraf } from "rimraf";
 import { removeComments } from "./lib/utils";
@@ -8,17 +8,16 @@ import { removeComments } from "./lib/utils";
 async function main() {
   const data = await promptUser();
   const targetDir = resolve(process.cwd(), data.appName);
-  const template = join("base", data.framework, "**");
-
+  const template = join("base", data.framework, data.variants, "**");
   try {
     await rimraf(join(template, "node_modules"));
     await rimraf(targetDir);
     await cpy(template, targetDir, { flat: false });
     if (data.ui !== "none") {
       const { setupConfig } = (await import(
-        `extra/next/ui/${data.ui}/setup.config`
+        `extra/next/${data.variants}/ui/${data.ui}/setup.config.ts`
       )) as { setupConfig: SETUP_CONFIG };
-      await setupConfig(data.packageManager as PM, targetDir);
+      await setupConfig(data.pm, targetDir);
     }
     removeComments(join(targetDir, "src/app/layout.tsx"));
   } catch (err) {

@@ -1,5 +1,6 @@
 import type { PM } from "@/src/types";
-import chalk from "chalk";
+import which from "which";
+import chalk, { type ChalkInstance } from "chalk";
 import { execa } from "execa";
 import { readFile, writeFile } from "fs/promises";
 import validateProjectName from "validate-npm-package-name";
@@ -60,37 +61,53 @@ export async function installPackages(
 type PatchMap = { [placeholder: string]: string };
 
 export async function patchFile(filePath: string, patches: PatchMap) {
-  // Read the file content
   let content = await readFile(filePath, "utf-8");
 
-  // Replace all placeholders
   for (const [placeholder, replacement] of Object.entries(patches)) {
     const escaped = placeholder.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const regex = new RegExp(escaped, "g");
     content = content.replace(regex, replacement);
   }
 
-  // Write updated content (overwrites or new file)
   await writeFile(filePath, content, "utf-8");
+}
+
+export async function isPmAvailable(pm: string): Promise<boolean> {
+  try {
+    await which(pm);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 export async function removeComments(filePath: string) {
   let content = await readFile(filePath, "utf-8");
-
-  // Remove JSX comments with braces
   content = content.replace(/\{\/\*[\s\S]*?\*\/\}/g, "");
-
-  // Remove normal JS block comments
   content = content.replace(/\/\*[\s\S]*?\*\//g, "");
-
-  // Remove line comments
   content = content.replace(/\/\/.*$/gm, "");
-
-  // Remove leftover empty JSX expressions like {}
   content = content.replace(/\{\s*\}/g, "");
-
-  // Remove extra empty lines (replace 2+ empty lines with 1)
   content = content.replace(/\n\s*\n+/g, "\n");
-
   await writeFile(filePath, content, "utf-8");
 }
+
+export function styleMessage(
+  message: string,
+  description?: string,
+  opts?: {
+    messageColor?: ChalkInstance;
+    descriptionColor?: ChalkInstance;
+  },
+) {
+  const { messageColor = chalk.blue, descriptionColor = chalk.gray } =
+    opts || {};
+
+  const styledMessage = messageColor(message);
+  const styledDescription = description
+    ? descriptionColor(` ${description}`)
+    : "";
+
+  return styledMessage + styledDescription;
+}
+
+// TODO : handle packagemanager

@@ -6,7 +6,7 @@ import { readFile, writeFile } from "fs/promises";
 import { join } from "path";
 import cpy from "cpy";
 
-const CONFIG_DIR = "extra/next/ui/shadcn/src";
+const CONFIG_DIR = "extra/next/pages/ui/shadcn/src";
 
 const dependencies: string[] = [
   "class-variance-authority",

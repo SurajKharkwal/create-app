@@ -4,7 +4,7 @@ import { rimraf } from "rimraf";
 import cpy from "cpy";
 import { join } from "path";
 
-const CONFIG_DIR = "extra/next/ui/hero/src";
+const CONFIG_DIR = "extra/next/pages/ui/hero/src";
 
 const dependencies: string[] = [
   "@heroui/system",
