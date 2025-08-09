@@ -16,7 +16,7 @@ const devDependencies: string[] = [];
 
 const heroUIPatches = {
   "{/*heroui_provider*/}":
-    'import { HeroProvider } from "@src/components/hero-provider";',
+    'import { HeroProvider } from "@/components/hero-provider"',
   "{/*hero_provider_start*/}": "<HeroProvider>",
   "{/*hero_provider_end*/}": "</HeroProvider>",
 };
