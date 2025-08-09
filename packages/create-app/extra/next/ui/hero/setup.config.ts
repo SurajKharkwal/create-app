@@ -4,7 +4,7 @@ import { rimraf } from "rimraf";
 import cpy from "cpy";
 import { join } from "path";
 
-const CONFIG_DIR = "extra/next/ui/hero/src";
+const CONFIG_DIR = join(__dirname, "src");
 
 const dependencies: string[] = [
   "@heroui/system",
@@ -27,9 +27,11 @@ export async function setupConfig(pm: PM, appDir: string): Promise<void> {
       rename: "globals.css",
       overwrite: true,
     });
+
     await cpy(join(CONFIG_DIR, "hero.ts.txt"), join(appDir, "src/app"), {
       rename: "hero.ts",
     });
+    
     await cpy(
       join(CONFIG_DIR, "provider.tsx.txt"),
       join(appDir, "src/components"),

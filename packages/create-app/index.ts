@@ -8,7 +8,7 @@ import { removeComments } from "./lib/utils";
 async function main() {
   const data = await promptUser();
   const targetDir = resolve(process.cwd(), data.appName);
-  const template = join("base", data.framework, "**");
+  const template = join(__dirname, "base", data.framework, "**");
 
   try {
     await rimraf(join(template, "node_modules"));
