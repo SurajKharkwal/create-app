@@ -1,0 +1,13 @@
+
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
+
+const globalForDb = globalThis as unknown as { conn: ReturnType<typeof postgres> };
+
+export const connection =
+  globalForDb.conn ||
+  postgres(process.env.DATABASE_URL!, { max: 1 });
+
+if (process.env.NODE_ENV !== "production") globalForDb.conn = connection;
+
+export const db = drizzle(connection);

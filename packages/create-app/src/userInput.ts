@@ -61,9 +61,9 @@ export const questions: PromptObject[] = [
       }
       if (values.framework === "react") {
         return [
+          { title: "None", value: "none" },
           { title: "React Router", value: "react-router" },
           { title: "TanStack Router", value: "tanstack-router" },
-          { title: "None", value: "none" },
         ];
       }
       return [];
@@ -74,9 +74,9 @@ export const questions: PromptObject[] = [
     type: "select",
     message: styleMessage("Select a UI framework"),
     choices: [
-      { title: "Shadcn UI", value: "shadcn" },
-      { title: "Hero UI", value: "hero" },
       { title: "None", value: "none" },
+      { title: "Hero UI", value: "hero" },
+      { title: "Shadcn UI", value: "shadcn" },
     ],
   },
   {
@@ -84,11 +84,11 @@ export const questions: PromptObject[] = [
     type: (_, values) => (values.framework === "next" ? "select" : null),
     message: styleMessage("Select a database (Next.js only)"),
     choices: [
-      { title: "PostgreSQL", value: "postgresql" },
-      { title: "SQLite", value: "sqlite" },
-      { title: "MongoDB", value: "mongodb" },
-      { title: "MySQL", value: "mysql" },
       { title: "None", value: "none" },
+      { title: "MySQL", value: "mysql" },
+      { title: "SQLite", value: "sqlite" },
+      { title: "MongoDB", value: "mongo" },
+      { title: "Postgres", value: "postgres" },
     ],
   },
   {
@@ -96,9 +96,9 @@ export const questions: PromptObject[] = [
     type: (_, values) => (values.framework === "next" ? "select" : null),
     message: styleMessage("Select an ORM (Next.js only)"),
     choices: [
+      { title: "None", value: "none" },
       { title: "Prisma", value: "prisma" },
       { title: "Drizzle", value: "drizzle" },
-      { title: "None", value: "none" },
     ],
   },
   {
@@ -106,9 +106,8 @@ export const questions: PromptObject[] = [
     type: (_, values) => (values.framework === "next" ? "select" : null),
     message: styleMessage("Do you want authentication?"),
     choices: [
-      { title: "NextAuth", value: "nextauth" },
-      { title: "Clerk", value: "clerk" },
       { title: "None", value: "none" },
+      { title: "Clerk", value: "clerk" },
     ],
   },
 ];

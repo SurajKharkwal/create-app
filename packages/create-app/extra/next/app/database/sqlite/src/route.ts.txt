@@ -1,0 +1,17 @@
+
+import { getDB } from "@/lib/connect";
+import { NextResponse } from "next/server";
+
+export async function GET() {
+  try {
+    const db = getDB();
+
+    // Example: get SQLite version
+    const row = db.prepare("SELECT sqlite_version() AS version").get();
+
+    return NextResponse.json({ message: "SQLite connected", version: row.version });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: "Database connection failed" }, { status: 500 });
+  }
+}

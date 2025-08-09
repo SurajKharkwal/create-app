@@ -1,0 +1,25 @@
+
+// lib/connect.ts
+import mysql from "mysql2/promise";
+
+if (!process.env.DATABASE_URL) {
+  throw new Error("Please define the DATABASE_URL environment variable in .env.local");
+}
+
+// In development, use a global variable to persist connection
+declare global {
+  // eslint-disable-next-line no-var
+  var _mysqlConnection: mysql.Connection | undefined;
+}
+
+export async function connectDB() {
+  if (process.env.NODE_ENV === "development") {
+    if (!global._mysqlConnection) {
+      global._mysqlConnection = await mysql.createConnection(process.env.DATABASE_URL);
+    }
+    return global._mysqlConnection;
+  }
+
+  // In production, always create a fresh connection
+  return mysql.createConnection(process.env.DATABASE_URL);
+}

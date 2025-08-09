@@ -1,0 +1,14 @@
+// src/app/api/users/route.ts
+import { connectDB } from "@/lib/connect";
+import { NextResponse } from "next/server";
+
+export async function GET() {
+  try {
+    const db = await connectDB();
+    const [rows] = await db.execute("SELECT * FROM users");
+    return NextResponse.json(rows);
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: "Database connection failed" }, { status: 500 });
+  }
+}

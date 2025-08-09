@@ -1,0 +1,13 @@
+
+import { query } from "@/lib/connect";
+import { NextResponse } from "next/server";
+
+export async function GET() {
+  try {
+    const result = await query("SELECT NOW()");
+    return NextResponse.json({ message: "PostgreSQL connected", currentTime: result.rows[0].now });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: "Database connection failed" }, { status: 500 });
+  }
+}

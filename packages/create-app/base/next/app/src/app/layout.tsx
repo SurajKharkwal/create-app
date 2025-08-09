@@ -31,9 +31,9 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          {/* heroui_provider_start */}
+          {/*heroui_provider_start*/}
           {children}
-          {/* heroui_provider_end */}
+          {/*heroui_provider_end*/}
         </body>
       </html>
       {/* clerk_end */}
